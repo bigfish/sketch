@@ -2,9 +2,12 @@
 <html>
   <head>
     <title>Sketch</title>
+    <script src="sketch.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <canvas id="canvas" width="640" height="640"></canvas>
-    <script src="sketch.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      var drawing = new Drawing("canvas");
+    </script>
   </body>
 </html>
