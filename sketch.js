@@ -5,9 +5,6 @@ function Point(x, y, c) {
     this.y = y;
     this.c = c;
 }
-Point.prototype.toString = function () {
-    return '{"x":' + this.x + ',"y":' + this.y + ',"c":' + this.c + '}';
-};
 
 function Sketch(canvasID) {
 
@@ -119,7 +116,13 @@ function Sketch(canvasID) {
 
     function getJSON() {
         //return as JSON string
-        return "[" + path + "]";
+        var jsonArr = [];
+        var point;
+        for (var p = 0; p < path.length; p++) {
+            point = path[p];
+            jsonArr.push('{"x":' + point.x + ',"y":' + point.y + ',"c":' + point.c + '}');
+        }
+        return "["+jsonArr.join(",")+"]";
     }
 
     function setData(pathData) {
