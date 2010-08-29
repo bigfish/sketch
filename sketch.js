@@ -1,23 +1,29 @@
 /*jslint evil: true*/
 
 function Sketch(canvasID) {
+console.log("sketch:Sketch(" + canvasID + ")" );
 
     var ctx;
+    var canvas_left;
+    var canvas_top;
     var drawing = false;
     var path = []; //array of points
     var MOVE_TO = 0;
     var LINE_TO = 1;
 
     function clearScreen() {
+console.log("sketch:clearScreen()" );
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function clear() {
+console.log("sketch:clear()" );
         clearScreen();
         path = [];
     }
 
     function startLine(x, y) {
+console.log("sketch:startLine(" + x + ", " + y + ")" );
         drawing = true;
         ctx.beginPath();
         path.push( { x: x, y: y, c: MOVE_TO});
@@ -25,12 +31,14 @@ function Sketch(canvasID) {
     }
 
     function drawLine(x, y) {
+console.log("sketch:drawLine(" + x + ", " + y + ")" );
         path.push( { x: x, y: y, c: LINE_TO});
         clearScreen();
         drawPath();
     }
 
     function drawPath() {
+console.log("sketch:drawPath()" );
         var point;
         if (path.length === 0) {
             return;
@@ -39,6 +47,7 @@ function Sketch(canvasID) {
         for (var p = 0; p < path.length; p++) {
 
             point = path[p];
+                console.log(point.x + "," + point.y +"," + point.c);
 
             if (point.c == MOVE_TO) {
                 ctx.moveTo(point.x, point.y);
@@ -56,25 +65,29 @@ function Sketch(canvasID) {
     }
 
     function endLine(x, y) {
+console.log("sketch:endLine(" + x + ", " + y + ")" );
         drawLine(x, y);
         drawing = false;
     }
 
     function onMouseDown(e) {
-        startLine(e.offsetX, e.offsetY);
+console.log("sketch:onMouseDown(" + e + ")" );
+        startLine(e.pageX - canvas_left, e.pageY - canvas_top);
     }
 
     function onMouseUp(e) {
-        endLine(e.offsetX, e.offsetY);
+console.log("sketch:onMouseUp(" + e + ")" );
+        endLine(e.pageX - canvas_left, e.pageY - canvas_top);
     }
 
     function onMouseMove(e) {
         if (drawing) {
-            drawLine(e.offsetX, e.offsetY);
+            drawLine(e.pageX - canvas_left, e.pageY - canvas_top);
         }
     }
 
     function init(canvasID) {
+console.log("sketch:init(" + canvasID + ")" );
 
         if (typeof canvasID !== "string") {
             alert("Drawing requires id of canvas element as parameter");
@@ -93,22 +106,25 @@ function Sketch(canvasID) {
             alert("Drawing was unable to initialize. Most likely you browser does not support Canvas");
             return;
         }
-
+        canvas_left = $(canvas).position().left;
+        canvas_top = $(canvas).position().top;
         ctx.strokeStyle = "#000000";
         ctx.lineWidth = 0;
 
-        canvas.addEventListener("mousedown", onMouseDown);
-        canvas.addEventListener("mouseup", onMouseUp);
-        canvas.addEventListener("mousemove", onMouseMove);
+        $(canvas).mousedown(onMouseDown);
+        $(canvas).mouseup(onMouseUp);
+        $(canvas).mousemove(onMouseMove);
 
     }
 
     function getData() {
+console.log("sketch:getData()" );
         //return as array of point objects
         return path;
     }
 
     function getJSON() {
+console.log("sketch:getJSON()" );
         //return as JSON string
         var jsonArr = [];
         var point;
@@ -120,12 +136,14 @@ function Sketch(canvasID) {
     }
 
     function setData(pathData) {
+console.log("sketch:setData(" + pathData + ")" );
         clear();
         path = pathData;
         drawPath();
     }
 
     function loadJSON(json) {
+console.log("sketch:loadJSON(" + json + ")" );
         if(json){
             clear();
             try {
