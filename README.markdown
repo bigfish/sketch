@@ -25,5 +25,7 @@
 * getJSON --> gets JSON string for saving
 * loadJSON --> creates drawing using JSON string from getJSON()
 
+#### License
+MIT -- see included LICENSE.txt file
 
 	
