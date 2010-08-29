@@ -17,7 +17,6 @@ function Sketch(canvasID) {
     var MOVE_TO = 0;
     var LINE_TO = 1;
 
-
     function clearScreen() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -57,7 +56,9 @@ function Sketch(canvasID) {
                 ctx.lineTo(point.x, point.y);
 
             } else {
-                console.log("unknown command");
+                if (console && console.log) {
+                    console.log("unknown command");
+                }
             }
         }
         ctx.stroke();
@@ -128,9 +129,15 @@ function Sketch(canvasID) {
     }
 
     function loadJSON(json) {
-        clear();
-        path = eval(json);
-        drawPath();
+        if(json){
+            clear();
+            try {
+                path = eval(json);
+            } catch(e) {
+                alert("error parsing json -- please check with jslint");
+            }
+            drawPath();
+        }
     }
 
     init(canvasID);
