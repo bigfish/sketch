@@ -1,7 +1,6 @@
 /*jslint evil: true*/
 
 function Sketch(canvasID) {
-console.log("sketch:Sketch(" + canvasID + ")" );
 
     var ctx;
     var canvas_left;
@@ -12,18 +11,15 @@ console.log("sketch:Sketch(" + canvasID + ")" );
     var LINE_TO = 1;
 
     function clearScreen() {
-console.log("sketch:clearScreen()" );
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function clear() {
-console.log("sketch:clear()" );
         clearScreen();
         path = [];
     }
 
     function startLine(x, y) {
-console.log("sketch:startLine(" + x + ", " + y + ")" );
         drawing = true;
         ctx.beginPath();
         path.push( { x: x, y: y, c: MOVE_TO});
@@ -31,14 +27,12 @@ console.log("sketch:startLine(" + x + ", " + y + ")" );
     }
 
     function drawLine(x, y) {
-console.log("sketch:drawLine(" + x + ", " + y + ")" );
         path.push( { x: x, y: y, c: LINE_TO});
         clearScreen();
         drawPath();
     }
 
     function drawPath() {
-console.log("sketch:drawPath()" );
         var point;
         if (path.length === 0) {
             return;
@@ -47,7 +41,6 @@ console.log("sketch:drawPath()" );
         for (var p = 0; p < path.length; p++) {
 
             point = path[p];
-                console.log(point.x + "," + point.y +"," + point.c);
 
             if (point.c == MOVE_TO) {
                 ctx.moveTo(point.x, point.y);
@@ -57,7 +50,6 @@ console.log("sketch:drawPath()" );
 
             } else {
                 if (console && console.log) {
-                    console.log("unknown command");
                 }
             }
         }
@@ -65,18 +57,15 @@ console.log("sketch:drawPath()" );
     }
 
     function endLine(x, y) {
-console.log("sketch:endLine(" + x + ", " + y + ")" );
         drawLine(x, y);
         drawing = false;
     }
 
     function onMouseDown(e) {
-console.log("sketch:onMouseDown(" + e + ")" );
         startLine(e.pageX - canvas_left, e.pageY - canvas_top);
     }
 
     function onMouseUp(e) {
-console.log("sketch:onMouseUp(" + e + ")" );
         endLine(e.pageX - canvas_left, e.pageY - canvas_top);
     }
 
@@ -87,7 +76,6 @@ console.log("sketch:onMouseUp(" + e + ")" );
     }
 
     function init(canvasID) {
-console.log("sketch:init(" + canvasID + ")" );
 
         if (typeof canvasID !== "string") {
             alert("Drawing requires id of canvas element as parameter");
@@ -109,7 +97,7 @@ console.log("sketch:init(" + canvasID + ")" );
         canvas_left = $(canvas).position().left;
         canvas_top = $(canvas).position().top;
         ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 0;
+        ctx.lineWidth = 1;
 
         $(canvas).mousedown(onMouseDown);
         $(canvas).mouseup(onMouseUp);
@@ -118,13 +106,11 @@ console.log("sketch:init(" + canvasID + ")" );
     }
 
     function getData() {
-console.log("sketch:getData()" );
         //return as array of point objects
         return path;
     }
 
     function getJSON() {
-console.log("sketch:getJSON()" );
         //return as JSON string
         var jsonArr = [];
         var point;
@@ -136,14 +122,12 @@ console.log("sketch:getJSON()" );
     }
 
     function setData(pathData) {
-console.log("sketch:setData(" + pathData + ")" );
         clear();
         path = pathData;
         drawPath();
     }
 
     function loadJSON(json) {
-console.log("sketch:loadJSON(" + json + ")" );
         if(json){
             clear();
             try {

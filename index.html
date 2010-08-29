@@ -23,6 +23,21 @@
     </style>
     <script src="jquery.js" type="text/javascript" charset="utf-8"></script>
     <script src="sketch.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      $(document).ready(function(){
+        var sketch = new Sketch("canvas");
+        var jsonTA = document.getElementById("json");
+        $("#clearBtn").click(function(){
+          sketch.clear();
+        });
+        $("#showJsonBtn").click(function(){
+          jsonTA.value = sketch.getJSON();
+        });
+        $("#applyJsonBtn").click(function(){
+          sketch.loadJSON(jsonTA.value);
+        });
+      });
+    </script>
   </head>
   <body>
     <table width="100%">
@@ -35,28 +50,12 @@
           <p class="small">To draw, click and drag on the area within the black border to the left.</p>
           <p class="small">You can save a drawing by clicking 'Show JSON' and saving as a text file.</p>
           <p class="small">To load a saved drawing, you can copy and paste the JSON text into the box below, and click 'Apply JSON' button.</p>
-          <input type="button" value="Clear Screen" id="clearBtn">
-          <input type="button" value="Show JSON" id="showJsonBtn" >
-          <input type="button" value="Apply JSON" id="applyJsonBtn">
+          <input type="button" value="Clear Screen" id="clearBtn" ></input>
+          <input type="button" value="Show JSON" id="showJsonBtn" ></input>
+          <input type="button" value="Apply JSON" id="applyJsonBtn"></input>
           <textarea id="json" ></textarea>
         </td>
       </tr>
     </table>
-    <script>
-      var sketch = new Sketch("canvas");
-      var jsonTA = document.getElementById("json");
-      function clear() {
-        sketch.clear();
-      }
-      function showJson(){
-        jsonTA.value = sketch.getJSON();
-      }
-      function applyJson(){
-        sketch.loadJSON(jsonTA.value);
-      }
-      $("clearBtn").click(clear);
-      $("showJsonBtn").click(showJson);
-      $("applyJsonBtn").click(applyJson);
-    </script>
   </body>
 </html>
