@@ -12,6 +12,9 @@
       }
       #canvas {
         border:1px solid black;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
       }
       #json {
         width: 100%;
@@ -50,9 +53,9 @@
           <p class="small">To draw, click and drag on the area within the black border to the left.</p>
           <p class="small">You can save a drawing by clicking 'Show JSON' and saving as a text file.</p>
           <p class="small">To load a saved drawing, you can copy and paste the JSON text into the box below, and click 'Apply JSON' button.</p>
-          <input type="button" value="Clear Screen" id="clearBtn" ></input>
-          <input type="button" value="Show JSON" id="showJsonBtn" ></input>
-          <input type="button" value="Apply JSON" id="applyJsonBtn"></input>
+          <input type="button" value="Clear Screen" id="clearBtn" >
+          <input type="button" value="Show JSON" id="showJsonBtn" >
+          <input type="button" value="Apply JSON" id="applyJsonBtn">
           <textarea id="json" ></textarea>
         </td>
       </tr>
