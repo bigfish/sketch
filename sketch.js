@@ -5,18 +5,18 @@ function Point(x, y, c) {
     this.y = y;
     this.c = c;
 }
-
 Point.prototype.toString = function () {
     return '{"x":' + this.x + ',"y":' + this.y + ',"c":' + this.c + '}';
 };
 
-function Drawing(canvasID) {
+function Sketch(canvasID) {
 
     var ctx;
     var drawing = false;
-    var path = []; //array points
+    var path = []; //array of Points
     var MOVE_TO = 0;
     var LINE_TO = 1;
+
 
     function clearScreen() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
