@@ -1,16 +1,10 @@
 /*jslint evil: true*/
 
-function Point(x, y, c) {
-    this.x = x;
-    this.y = y;
-    this.c = c;
-}
-
 function Sketch(canvasID) {
 
     var ctx;
     var drawing = false;
-    var path = []; //array of Points
+    var path = []; //array of points
     var MOVE_TO = 0;
     var LINE_TO = 1;
 
@@ -26,12 +20,12 @@ function Sketch(canvasID) {
     function startLine(x, y) {
         drawing = true;
         ctx.beginPath();
-        path.push(new Point(x, y, MOVE_TO));
+        path.push( { x: x, y: y, c: MOVE_TO});
         ctx.moveTo(x, y);
     }
 
     function drawLine(x, y) {
-        path.push(new Point(x, y, LINE_TO));
+        path.push( { x: x, y: y, c: LINE_TO});
         clearScreen();
         drawPath();
     }
