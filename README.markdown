@@ -25,6 +25,9 @@
 * getJSON --> gets JSON string for saving
 * loadJSON --> creates drawing using JSON string from getJSON()
 
+#### Demo
+[http://www.dafishinsea.com/sketch/](http://www.dafishinsea.com/sketch/)
+
 #### License
 MIT -- see included LICENSE.txt file
 
