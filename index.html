@@ -39,6 +39,12 @@
         $("#applyJsonBtn").click(function(){
           sketch.loadJSON(jsonTA.value);
         });
+        $("#showNormJsonBtn").click(function(){
+          jsonTA.value = sketch.getJSON(true);
+        });
+        $("#applyNormJsonBtn").click(function(){
+          sketch.loadJSON(jsonTA.value, true);
+        });
       });
     </script>
   </head>
@@ -57,6 +63,8 @@
           <input type="button" value="Show JSON" id="showJsonBtn" >
           <input type="button" value="Apply JSON" id="applyJsonBtn">
           <textarea id="json" ></textarea>
+          <input type="button" value="Show Normalized JSON" id="showNormJsonBtn" >
+          <input type="button" value="Apply Normalized JSON" id="applyNormJsonBtn">
         </td>
       </tr>
     </table>

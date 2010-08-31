@@ -7,7 +7,7 @@ function Sketch(canvasID) {
     var canvas_left;
     var canvas_top;
     var drawing = false;
-    var path = []; 
+    var path = [];
     var commands = [];
     var MOVE_TO = 0;
     var LINE_TO = 1;
@@ -125,6 +125,15 @@ function Sketch(canvasID) {
         return normalArray;
     }
 
+    function deNormalizePoints(points) {
+        var point, deNormalArray = [];
+        for (var p = 0; p < points.length; p += 2) {
+            point = points[p];
+            deNormalArray.push(points[p] * canvas.width, points[p + 1] * canvas.height);
+        }
+        return deNormalArray;
+    }
+
     function getData(normalize) {
         //return as array of point objects
         if (normalize) {
@@ -146,14 +155,18 @@ function Sketch(canvasID) {
         return '[[' + points + '], [' + commands + ']]';
     }
 
-    function setData(pathData) {
+    function setData(pathData, normalized) {
         clear();
-        path = pathData[0];
+        if (normalized) {
+            path = deNormalizePoints(pathData[0]);
+        } else {
+            path = pathData[0];
+        }
         commands = pathData[1];
         drawPath();
     }
 
-    function loadJSON(json) {
+    function loadJSON(json, normalized) {
         var pathData;
         if (json) {
             clear();
@@ -162,7 +175,7 @@ function Sketch(canvasID) {
             } catch (e) {
                 alert("error parsing json -- please check with jslint");
             }
-            setData(pathData);
+            setData(pathData, normalized);
         }
     }
 
