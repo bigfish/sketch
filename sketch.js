@@ -3,10 +3,12 @@
 function Sketch(canvasID) {
 
     var ctx;
+    var canvas;
     var canvas_left;
     var canvas_top;
     var drawing = false;
-    var path = []; //array of points
+    var path = []; 
+    var commands = [];
     var MOVE_TO = 0;
     var LINE_TO = 1;
 
@@ -17,45 +19,50 @@ function Sketch(canvasID) {
     function clear() {
         clearScreen();
         path = [];
+        commands = [];
     }
 
     function startLine(x, y) {
         drawing = true;
         ctx.beginPath();
-        path.push( { x: x, y: y, c: MOVE_TO});
+        path.push(x, y);
+        commands.push(MOVE_TO);
         ctx.moveTo(x, y);
     }
 
-    function drawLine(x, y) {
-        path.push( { x: x, y: y, c: LINE_TO});
-        clearScreen();
-        drawPath();
-    }
-
     function drawPath() {
-        var point;
+        var point_x, point_y, command;
+
         if (path.length === 0) {
             return;
         }
+
         ctx.beginPath();
-        for (var p = 0; p < path.length; p++) {
 
-            point = path[p];
+        for (var p = 0; p < path.length; p += 2) {
 
-            if (point.c == MOVE_TO) {
-                ctx.moveTo(point.x, point.y);
+            point_x = path[p];
+            point_y = path[p + 1];
+            command = commands[Math.floor(p / 2)];
 
-            } else if (point.c == LINE_TO) {
-                ctx.lineTo(point.x, point.y);
+            if (command === MOVE_TO) {
+                ctx.moveTo(point_x, point_y);
 
+            } else if (command === LINE_TO) {
+                ctx.lineTo(point_x, point_y);
             } else {
-                if (console && console.log) {
-                }
+                console.log("unknown command");
             }
+            ctx.stroke();
         }
-        ctx.stroke();
     }
 
+    function drawLine(x, y) {
+        path.push(x, y);
+        commands.push(LINE_TO);
+        clearScreen();
+        drawPath();
+    }
     function endLine(x, y) {
         drawLine(x, y);
         drawing = false;
@@ -90,7 +97,7 @@ function Sketch(canvasID) {
 
         try {
             ctx = canvas.getContext("2d");
-        } catch(e) {
+        } catch (e) {
             alert("Drawing was unable to initialize. Most likely you browser does not support Canvas");
             return;
         }
@@ -105,37 +112,57 @@ function Sketch(canvasID) {
 
     }
 
-    function getData() {
-        //return as array of point objects
-        return path;
+    /**
+     * Return array of points normalized to be between 0 & 1
+     * @return {Array} 
+     */
+    function normalizePoints(points) {
+        var point, normalArray = [];
+        for (var p = 0; p < points.length; p += 2) {
+            point = points[p];
+            normalArray.push(points[p] / canvas.width, points[p + 1] / canvas.height);
+        }
+        return normalArray;
     }
 
-    function getJSON() {
-        //return as JSON string
-        var jsonArr = [];
-        var point;
-        for (var p = 0; p < path.length; p++) {
-            point = path[p];
-            jsonArr.push('{"x":' + point.x + ',"y":' + point.y + ',"c":' + point.c + '}');
+    function getData(normalize) {
+        //return as array of point objects
+        if (normalize) {
+            return normalizePoints(path);
+        } else {
+            return path;
         }
-        return "["+jsonArr.join(",")+"]";
+    }
+
+    function getJSON(normalize) {
+
+        var point, points;
+        if (normalize) {
+            points = normalizePoints(path);
+        } else {
+            points = path;
+        }
+
+        return '[[' + points + '], [' + commands + ']]';
     }
 
     function setData(pathData) {
         clear();
-        path = pathData;
+        path = pathData[0];
+        commands = pathData[1];
         drawPath();
     }
 
     function loadJSON(json) {
-        if(json){
+        var pathData;
+        if (json) {
             clear();
             try {
-                path = eval(json);
-            } catch(e) {
+                pathData = eval(json);
+            } catch (e) {
                 alert("error parsing json -- please check with jslint");
             }
-            drawPath();
+            setData(pathData);
         }
     }
 
